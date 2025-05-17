@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardiovascular Risk Prediction</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e3f2fd;
+            color: #37474f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #1e88e5;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            width: 100%;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 95%;
+            max-width: 900px;
+            margin: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .form-card {
+            width: 60%;
+            margin-bottom: 20px;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #fff8e1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #424242;
+        }
+
+        input[type="number"],
+        select {
+            width: calc(100% - 16px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #b0bec5;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1.1em;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #388e3c;
+        }
+
+        .gender-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .gender-group label {
+            margin-right: 20px;
+            font-weight: normal;
+        }
+
+        .gender-group input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .result-card {
+            background-color: #e0f7fa;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            margin-top: 0;
+            text-align: center;
+            width: 35%;
+        }
+
+        .result-card h2 {
+            color: #00acc1;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .result-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 20px;
+        }
+
+        .result-card a {
+            display: inline-block;
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .result-card a:hover {
+            background-color: #d32f2f;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cardiovascular Risk Prediction</h1>
+    <div class="container">
+        <div class="form-card">
+            <form action="/predict" method="POST">
+                <div class="input-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="gender">Gender:</label>
+                    <div class="gender-group">
+                        <input type="radio" id="gender_female" name="gender" value="1" required>
+                        <label for="gender_female">Female</label>
+                        <input type="radio" id="gender_male" name="gender" value="2" required>
+                        <label for="gender_male">Male</label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="height">Height (cm):</label>
+                    <input type="number" id="height" name="height" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="weight">Weight (kg):</label>
+                    <input type="number" step="0.1" id="weight" name="weight" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="ap_hi">Systolic Blood Pressure:</label>
+                    <input type="number" id="ap_hi" name="ap_hi" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="ap_lo">Diastolic Blood Pressure:</label>
+                    <input type="number" id="ap_lo" name="ap_lo" required>
+                </div>
+
+                 <div class="input-group">
+                    <label for="cholesterol">Cholesterol (1: Normal, 2: Borderline, 3: High):</label>
+                    <select id="cholesterol" name="cholesterol" required>
+                        <option value="1">Normal</option>
+                        <option value="2">Borderline</option>
+                        <option value="3">High</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="gluc">Glucose (1: Normal, 2: Borderline, 3: High):</label>
+                    <select id="gluc" name="gluc" required>
+                        <option value="1">Normal</option>
+                        <option value="2">Borderline</option>
+                        <option value="3">High</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="smoke">Do you smoke:</label>
+                    <select id="smoke" name="smoke" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="alco">Do you consume alcohol:</label>
+                    <select id="alco" name="alco" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="active">Are you physically active:</label>
+                    <select id="active" name="active" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <input type="submit" value="Predict">
+            </form>
+        </div>
+
+        {% if result %}
+        <div id="resultCard" class="result-card">
+            <h2>Prediction Result</h2>
+            <p>Cardiovascular Disease Risk: <strong>{{ result }}</strong></p>
+            <a href="/">Predict Again</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
